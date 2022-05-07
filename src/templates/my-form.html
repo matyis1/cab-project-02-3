@@ -1,0 +1,218 @@
+
+<!-- /templates/my-form.html-->
+
+<html>
+    <head>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+        <link href='https://fonts.googleapis.com/css?family=Bentham' rel='stylesheet'>
+        <title>CARE Buildings</title>
+
+        <!---->
+        <style>
+
+            body,
+            html {
+                height: 100%;
+                width: 100%;
+                font-family: "Times New Roman", Times, serif;
+            }
+
+            h2.b,
+            h4.b {
+                font-family: 'Bentham';
+            }
+
+            .header {
+                padding: 50px;
+                text-align: center;
+                background: rgb(56, 53, 63);
+                color: white;
+                font-size: 40px;
+                font-family: 'Bentham';
+            }
+            
+            .footer {
+                padding: 60px;
+                text-align: center;
+                background: rgb(56, 53, 63);
+                color: white;
+                font-size: 30px;
+            }
+
+            form {
+                margin: 1%;
+            }
+
+            div {
+                margin: 1% 0;
+            }
+           
+        </style>
+    </head>
+    <body>
+        <div class="header">
+            CARE: Creating and Revitilizing Energy
+            <h2>Site Plan Project</h2>
+          </div>
+
+        <div class="container">
+            <h2 class="b">Define a building to calculate its predicted power and cost</h2>
+            <h4 class="b">Add multiple buildings to see their cumulative totals</h4>
+            <div class="row">
+                <div class="col-sm-6" style="background-color:rgb(56, 53, 63);">
+
+                    
+                        <div class="row">
+                            <div class="col-sm-100" style="background-color:rgb(135, 118, 161);">
+                                <h4>Predicted Calculations (per day)</h4>
+                                <h5>Cost: {{ cost }} $</h5>
+                                <h5>Power Usage: {{ usage }} kWh</h5>
+                            </div>
+                        </div>
+                    
+
+                    <h4 style="color:white;">Current Buildings:</h4>
+                    <h5 style="color:white;">{%for row in namelist%}
+                        {{ row }} <br>
+                    {%endfor%}
+                    </h5>
+
+                    <div class="row">
+                        <div class="col-sm-100">
+                            <form action="/delete-handler" method="POST">
+                                <br><input type="submit" value="Delete Entries" class="btn btn-outline-light"><br>
+                            </form>
+                        </div>
+                    </div>
+                
+                </div> <!-- "col-sm-6" -->
+                <div class="col-sm-6" style="background-color:rgb(141, 135, 155);">
+                    <form action="/building-handler" method="POST">
+                        <h4>Input Specification Values:</h4>
+                        <p>Building Name: <input type="text" name="bname" required> </p>
+                        <p>Building Area (sq. ft.): <input type="number" name="barea" required> </p>
+
+                        <br>Building Type: 
+                        <input type="radio" name="btype" id="t1" value="1" required>Dorm
+                        <input type="radio" name="btype" id="t0" value="0">University
+
+                        <br>Provides Food?: 
+                        <input type="radio" name="bfood" id="f1" value="1" required>Yes
+                        <input type="radio" name="bfood" id="f0" value="0">No
+
+                        <br>STEM Building? (or high tech use?): 
+                        <input type="radio" name="bstem" id="s1" value="1" required>Yes
+                        <input type="radio" name="bstem" id="s0" value="0">No
+
+                        <br>Provides Heat?: 
+                        <input type="radio" name="bheat" id="h1" value="1" required>Yes
+                        <input type="radio" name="bheat" id="h0" value="0">No
+
+                        <br>Provides AC?: 
+                        <input type="radio" name="bac" id="a1" value="1" required>Yes
+                        <input type="radio" name="bac" id="a0" value="0">No
+
+                        <br><br><input type="submit" value="Submit" class="btn btn-outline-dark"><br> <p> </p>
+                    </form>
+                </div> <!-- "col-sm-6" -->
+            </div> <!-- "row" -->
+
+        </div> <!-- "container" -->
+
+        <div class="container">
+            <h2 class="b">Query Existing Data</h2>
+            <div class="row">
+                <div class="col-sm-6" style="background-color:rgb(135, 118, 161);">
+                    <h4>Choose a building to see its calculated power, cost, and sustainability score</h4><br>
+                    <form action="/average-handler" method="POST">
+                        <select name = 'avBuild' class="form-select form-select-sm" aria-label=".form-select-sm example">
+                            <option value="0">Select Building</option>
+                            <option value="Ely Allen Brewster House">Ely Allen Brewster House</option>
+                            <option value="Armstrong Hall">Armstrong Hall</option>
+                            <option value="Art & IMM">Art & IMM</option>
+                            <option value="ASB">ASB</option>
+                            <option value="Biology Building">Biology Building</option>
+                            <option value="Bliss Hall">Bliss Hall</option>
+                            <option value="Brower Student Center">Brower Student Center</option>
+                            <option value="School of Business">School of Business</option>
+                            <option value="Centennial Hall">Centennial Hall</option>
+                            <option value="Cromwell Hall">Cromwell Hall</option>
+                            <option value="Decker Hall">Decker Hall</option>
+                            <option value="Education Building">Education Building</option>
+                            <option value="Eickhoff Hall">Eickhoff Hall</option>
+                            <option value="Forcina Hall">Forcina Hall</option>
+                            <option value="Green Hall">Green Hall</option>
+                            <option value="Hausdoerffer Hall">Hausdoerffer Hall</option>
+                            <option value="Kendall Hall">Kendall Hall</option>
+                            <option value="Maintenance Building">Maintenance Building</option>
+                            <option value="Music Building">Music Building</option>
+                            <option value="New Residence Hall">New Residence Hall</option>
+                            <option value="Norsworthy Hall">Norsworthy Hall</option>
+                            <option value="Packer Hall">Packer Hall</option>
+                            <option value="Phelps Hall">Phelps Hall</option>
+                            <option value="Athletic Recreation Center">Athletic Recreation Center</option>
+                            <option value="Roscoe L West 68 Building">Roscoe L West 68 Building</option>
+                            <option value="Science Complex">Science Complex</option>
+                            <option value="Social Science Building">Social Science Building</option>
+                            <option value="Spiritual Center">Spiritual Center</option>
+                            <option value="R. Barbara Gitenstein Library">R. Barbara Gitenstein Library</option>
+                            <option value="Travers Wolfe Hall">Travers Wolfe Hall</option>
+                            <option value="Townhouse West/East (Cluster #1)">Townhouse West/East (Cluster #1)</option>
+                            <option value="Power House/Cogen">Power House/Cogen</option>
+                            <option value="Trenton Hall">Trenton Hall</option>
+                            <option value="Townhouse South (Cluster #2)">Townhouse South (Cluster #2)</option>
+                            <option value="Bliss Annex">Bliss Annex</option>
+                            <option value="Roscoe L West 34 Building">Roscoe L West 34 Building</option>
+                            <option value="Lions Stadium Concession">Lions Stadium Concession</option>
+                            <option value="Lions Stadium Restrooms">Lions Stadium Restrooms</option>
+                            <option value="Lions Stadium Pressbox">Lions Stadium Pressbox</option>
+                            <option value="Trenton Info Booth">Trenton Info Booth</option>
+                            <option value="Soccer Bathrooms">Soccer Bathrooms</option>
+                            <option value="Soccer Pressbox">Soccer Pressbox</option>
+                            <option value="Softball Concession">Softball Concession</option>
+                            <option value="Softball Pressbox">Softball Pressbox</option>
+                            <option value="STEM Building/Forum">STEM Building/Forum</option>
+                            <option value="Chemistry Addition">Chemistry Addition</option>
+                            <option value="Green Lane Storage Facility">Green Lane Storage Facility</option>
+                        </select> </p>
+                        <br><input type="submit" value="Enter" class="btn btn-outline-dark"><br><br>
+                    </form>
+                </div>
+
+                <div class="col-sm-6" style="background-color:rgb(56, 53, 63);">
+                    <form action="/query-handler" method="POST">
+                        <h4 style="color:white;">Choose a meter to load data on costs and usage for different dates</h4><br>
+                        <select name = 'query' class="form-select form-select-sm" aria-label=".form-select-sm example">
+                            <option value="0">Select Meter</option>
+                            <option value="EL1">EL1</option>
+                            <option value="EL2">EL2</option>
+                            <option value="EL3">EL3</option>
+                            <option value="EL4">EL4</option>
+                            <option value="EL5">EL5</option>
+                            <option value="EL6">EL6</option>
+                            <option value="NG1">NG1</option>
+                            <option value="NG2">NG2</option>
+                            <option value="NG3">NG3</option>
+                            <option value="NG4">NG4</option>
+                            <option value="NG5">NG5</option>
+                            <option value="NG6">NG6</option>
+                            <option value="NG7">NG7</option>
+                            <option value="NG8">NG8</option>
+                            <option value="NG9">NG9</option>
+                            <option value="NG10">NG10</option>
+                            <option value="NG11">NG11</option>
+                            <option value="NG12">NG12</option>
+                            <option value="NG13">NG13</option>
+                            <option value="NG14">NG14</option>
+                            <option value="NG15">NG15</option>
+                            <option value="NG16">NG16</option>
+                        </select> </p>
+                        <br><input type="submit" value="Enter" class="btn btn-outline-light"><br><br>
+                    </form>
+                </div>
+
+            </div>
+        </div>
+
+    </body>
+</html>
